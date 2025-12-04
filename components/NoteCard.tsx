@@ -96,19 +96,19 @@ export function NoteCard({ note, onDelete }: NoteCardProps) {
         </div>
 
         {/* Metadata and Actions */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pt-4 border-t border-gray-100 gap-4">
-          <div className="flex flex-col space-y-2 text-sm text-text-secondary dark:text-gray-300">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pt-4 border-t border-gray-100 dark:border-gray-700 gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 space-y-2 sm:space-y-0 text-sm text-text-secondary dark:text-gray-300">
             <div className="flex items-center space-x-2">
-              <User className="h-4 w-4 text-primary-400 dark:text-primary-500" />
-              <span>{note.uploaderName}</span>
+              <User className="h-4 w-4 text-primary-400 dark:text-primary-500 flex-shrink-0" />
+              <span className="truncate">{note.uploaderName}</span>
             </div>
             <div className="flex items-center space-x-2">
-              <Calendar className="h-4 w-4 text-primary-400 dark:text-primary-500" />
+              <Calendar className="h-4 w-4 text-primary-400 dark:text-primary-500 flex-shrink-0" />
               <span>{formatDate(note.createdAt)}</span>
             </div>
             {note.downloadCount > 0 && (
               <div className="flex items-center space-x-2 text-success-600 dark:text-success-400">
-                <Download className="h-4 w-4" />
+                <Download className="h-4 w-4 flex-shrink-0" />
                 <span className="text-xs font-medium">
                   {note.downloadCount} download{note.downloadCount !== 1 ? 's' : ''}
                 </span>
@@ -116,7 +116,7 @@ export function NoteCard({ note, onDelete }: NoteCardProps) {
             )}
           </div>
 
-          <div className="flex items-center justify-end sm:justify-start gap-2 flex-nowrap">
+          <div className="flex items-center justify-end sm:justify-start gap-2 flex-nowrap flex-shrink-0">
             {isOwner && (
               <>
                 {showConfirm ? (
@@ -159,9 +159,9 @@ export function NoteCard({ note, onDelete }: NoteCardProps) {
             )}
             <button
               onClick={handleDownload}
-              className="btn-primary text-sm px-4 py-2 min-h-[40px] flex items-center justify-center space-x-1.5"
+              className="btn-primary text-sm px-3 sm:px-4 py-2 min-h-[40px] flex items-center justify-center space-x-1.5 flex-1 sm:flex-initial"
             >
-              <Download className="h-4 w-4" />
+              <Download className="h-4 w-4 flex-shrink-0" />
               <span>Download</span>
             </button>
           </div>

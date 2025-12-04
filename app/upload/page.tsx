@@ -118,33 +118,36 @@ export default function UploadPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-bg-blue/80 via-bg-soft/80 to-white/80 dark:from-gray-900/80 dark:via-gray-800/80 dark:to-gray-900/80">
       {/* Header - Sticky */}
-      <header className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-soft border-b border-gray-100 dark:border-gray-700 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <header className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-soft border-b border-gray-100 dark:border-gray-700 sticky top-0 z-50 w-full">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center space-x-3 group">
-              <BookOpen className="h-8 w-8 text-text-primary dark:text-gray-100 group-hover:text-text-primary dark:group-hover:text-gray-100 transition-colors" />
-              <div>
-                <h1 className="text-xl sm:text-2xl font-bold text-text-primary dark:text-gray-100 font-display">A/L நோTස්</h1>
+            <Link href="/" className="flex items-center space-x-2 sm:space-x-3 group">
+              <BookOpen className="h-6 w-6 sm:h-8 sm:w-8 text-text-primary dark:text-gray-100 group-hover:text-text-primary dark:group-hover:text-gray-100 transition-colors flex-shrink-0" />
+              <div className="flex flex-col sm:block">
+                <h1 className="text-sm sm:text-xl md:text-2xl font-bold text-text-primary dark:text-gray-100 font-display leading-tight">
+                  <span className="block sm:inline">A/L</span>{' '}
+                  <span className="block sm:inline">நோTස්</span>
+                </h1>
                 <p className="text-xs text-text-secondary dark:text-gray-400 hidden sm:block">SL Student Relief</p>
               </div>
             </Link>
-            <div className="flex items-center space-x-2 sm:space-x-4">
+            <div className="flex items-center gap-2 sm:gap-3">
               <ThemeToggle />
               {user && (
-                <div className="flex items-center space-x-2 sm:space-x-3">
-                  <span className="text-xs sm:text-sm text-text-secondary dark:text-gray-300 hidden sm:inline">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <span className="text-xs sm:text-sm text-text-secondary dark:text-gray-300 hidden md:inline truncate max-w-[120px]">
                     {user.user_metadata?.full_name || user.email}
                   </span>
                   <button
                     onClick={logout}
-                    className="btn-secondary text-sm flex items-center space-x-2"
+                    className="btn-secondary text-sm flex items-center gap-1.5 sm:gap-2 px-3 sm:px-6 whitespace-nowrap"
                   >
-                    <LogOut className="h-4 w-4" />
+                    <LogOut className="h-4 w-4 flex-shrink-0" />
                     <span className="hidden sm:inline">Logout</span>
                   </button>
                 </div>
               )}
-              <Link href="/browse" className="text-text-secondary dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 font-medium px-3 sm:px-4 py-2 rounded-full hover:bg-primary-50 dark:hover:bg-gray-700 transition-all duration-200 text-sm sm:text-base">
+              <Link href="/browse" className="text-text-secondary dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 font-medium px-3 sm:px-4 py-2 rounded-full hover:bg-primary-50 dark:hover:bg-gray-700 transition-all duration-200 text-sm sm:text-base whitespace-nowrap">
                 Browse
               </Link>
             </div>
@@ -152,7 +155,7 @@ export default function UploadPage() {
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <main className="w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <div className="card animate-fade-in">
           <div className="text-center mb-8">
             <div className="relative inline-block mb-6">
@@ -294,16 +297,16 @@ export default function UploadPage() {
                 <label className="block text-sm font-semibold text-text-primary dark:text-gray-100 mb-2.5">
                   PDF File <span className="text-red-500">*</span>
                 </label>
-                <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-2xl p-8 sm:p-12 text-center hover:border-primary-400 dark:hover:border-primary-500 hover:bg-primary-50/30 dark:hover:bg-primary-900/20 transition-all duration-200 cursor-pointer group">
+                <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-2xl p-6 sm:p-8 md:p-12 text-center hover:border-primary-400 dark:hover:border-primary-500 hover:bg-primary-50/30 dark:hover:bg-primary-900/20 transition-all duration-200 cursor-pointer group">
                   <label htmlFor="file-input" className="cursor-pointer">
-                    <div className="bg-primary-100 dark:bg-primary-900/30 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary-200 dark:group-hover:bg-primary-800/40 transition-colors">
-                      <FileText className="h-8 w-8 text-primary-500 dark:text-primary-400" />
+                    <div className="bg-primary-100 dark:bg-primary-900/30 w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary-200 dark:group-hover:bg-primary-800/40 transition-colors">
+                      <FileText className="h-7 w-7 sm:h-8 sm:w-8 text-primary-500 dark:text-primary-400" />
                     </div>
-                    <p className="text-text-primary dark:text-gray-100 font-semibold mb-2">
-                      <span className="text-primary-500 dark:text-primary-400">Click to upload</span>{' '}
-                      <span className="text-text-secondary dark:text-gray-300">or drag and drop</span>
+                    <p className="text-text-primary dark:text-gray-100 font-semibold mb-2 text-sm sm:text-base">
+                      <span className="text-primary-500 dark:text-primary-400">Click to upload</span>
+                      <span className="hidden sm:inline"> or drag and drop</span>
                     </p>
-                    <p className="text-sm text-text-secondary dark:text-gray-300">
+                    <p className="text-xs sm:text-sm text-text-secondary dark:text-gray-300">
                       PDF only, max 50MB
                     </p>
                     <input
@@ -365,8 +368,8 @@ export default function UploadPage() {
       </main>
 
       {/* Footer - Minimal */}
-      <footer className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-t border-gray-100 dark:border-gray-700 mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <footer className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-t border-gray-100 dark:border-gray-700 mt-16 w-full">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <p className="text-center text-text-secondary dark:text-gray-400 text-sm">
             © 2025 A/L நோTස් - Helping students recover from natural disasters
           </p>

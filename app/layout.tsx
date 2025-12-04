@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter, Poppins } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from '@/components/AuthProvider';
@@ -20,6 +20,12 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: 'A/L நோTස් - SL Student Relief',
   description: 'Free study notes for flood-affected G.C.E. A/L students in Sri Lanka',
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({

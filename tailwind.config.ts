@@ -79,6 +79,7 @@ const config: Config = {
       animation: {
         'fade-in': 'fadeIn 0.3s ease-in-out',
         'slide-up': 'slideUp 0.3s ease-out',
+        'slide-in-right': 'slideInRight 0.3s ease-out',
         'scale-in': 'scaleIn 0.2s ease-out',
       },
       keyframes: {
@@ -93,6 +94,10 @@ const config: Config = {
         scaleIn: {
           '0%': { transform: 'scale(0.95)', opacity: '0' },
           '100%': { transform: 'scale(1)', opacity: '1' },
+        },
+        slideInRight: {
+          '0%': { transform: 'translateX(-100%)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
         },
       },
     },
