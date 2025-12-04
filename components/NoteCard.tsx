@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Note } from '@/lib/types';
-import { Download, User, Calendar, Trash2, Loader2 } from 'lucide-react';
+import { Download, User, Calendar, Trash2, Loader2, FileText } from 'lucide-react';
 import { incrementDownloadCount, deleteNote } from '@/lib/supabase/notes';
 import { STREAMS, SUBJECTS, MEDIUMS } from '@/lib/constants';
 import { useAuth } from '@/components/AuthProvider';
@@ -63,41 +63,57 @@ export function NoteCard({ note, onDelete }: NoteCardProps) {
   };
 
   return (
-    <div className="card">
+    <div className="card hover:shadow-blue hover:scale-[1.01] transition-all duration-200">
       <div className="flex flex-col space-y-4">
+        {/* Title and Description */}
         <div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
-            {note.title}
-          </h3>
+          <div className="flex items-start justify-between gap-3 mb-2">
+            <h3 className="text-lg sm:text-xl font-semibold text-text-primary line-clamp-2 flex-1 font-display">
+              {note.title}
+            </h3>
+            <div className="bg-primary-100 p-2 rounded-full flex-shrink-0">
+              <FileText className="h-5 w-5 text-primary-500" />
+            </div>
+          </div>
           {note.description && (
-            <p className="text-gray-600 text-sm line-clamp-3 mb-4">
+            <p className="text-text-secondary text-sm sm:text-base line-clamp-3 leading-relaxed">
               {note.description}
             </p>
           )}
         </div>
 
+        {/* Badges */}
         <div className="flex flex-wrap gap-2">
-          <span className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm font-medium">
+          <span className="badge badge-primary">
             {STREAMS[note.stream]}
           </span>
-          <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
+          <span className="badge badge-accent">
             {SUBJECTS[note.stream][note.subject]}
           </span>
-          <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
+          <span className="badge badge-orange">
             {MEDIUMS[note.medium]}
           </span>
         </div>
 
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pt-4 border-t border-gray-200 gap-4">
-          <div className="flex flex-col space-y-1 text-sm text-gray-500">
-            <div className="flex items-center space-x-1">
-              <User className="h-4 w-4" />
+        {/* Metadata and Actions */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pt-4 border-t border-gray-100 gap-4">
+          <div className="flex flex-col space-y-2 text-sm text-text-secondary">
+            <div className="flex items-center space-x-2">
+              <User className="h-4 w-4 text-primary-400" />
               <span>{note.uploaderName}</span>
             </div>
-            <div className="flex items-center space-x-1">
-              <Calendar className="h-4 w-4" />
+            <div className="flex items-center space-x-2">
+              <Calendar className="h-4 w-4 text-primary-400" />
               <span>{formatDate(note.createdAt)}</span>
             </div>
+            {note.downloadCount > 0 && (
+              <div className="flex items-center space-x-2 text-success-600">
+                <Download className="h-4 w-4" />
+                <span className="text-xs font-medium">
+                  {note.downloadCount} download{note.downloadCount !== 1 ? 's' : ''}
+                </span>
+              </div>
+            )}
           </div>
 
           <div className="flex items-center justify-end sm:justify-start gap-2 flex-nowrap">
@@ -108,16 +124,16 @@ export function NoteCard({ note, onDelete }: NoteCardProps) {
                     <button
                       onClick={handleDelete}
                       disabled={isDeleting}
-                      className="px-3 py-1.5 text-sm bg-red-600 text-white rounded-lg border-2 border-red-600 hover:bg-red-700 active:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center space-x-1.5"
+                      className="px-4 py-2 text-sm bg-red-500 text-white rounded-full border-2 border-red-500 hover:bg-red-600 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center space-x-1.5 min-h-[40px]"
                     >
                       {isDeleting ? (
                         <>
-                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                          <Loader2 className="h-4 w-4 animate-spin" />
                           <span>Deleting...</span>
                         </>
                       ) : (
                         <>
-                          <Trash2 className="h-3.5 w-3.5" />
+                          <Trash2 className="h-4 w-4" />
                           <span>Confirm</span>
                         </>
                       )}
@@ -125,7 +141,7 @@ export function NoteCard({ note, onDelete }: NoteCardProps) {
                     <button
                       onClick={() => setShowConfirm(false)}
                       disabled={isDeleting}
-                      className="px-3 py-1.5 text-sm bg-white text-gray-700 rounded-lg border-2 border-gray-300 hover:bg-gray-50 active:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                      className="px-4 py-2 text-sm bg-white text-text-secondary rounded-full border-2 border-gray-300 hover:bg-gray-50 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 min-h-[40px]"
                     >
                       Cancel
                     </button>
@@ -133,29 +149,23 @@ export function NoteCard({ note, onDelete }: NoteCardProps) {
                 ) : (
                   <button
                     onClick={() => setShowConfirm(true)}
-                    className="px-3 py-1.5 text-sm bg-white text-red-600 rounded-lg border-2 border-red-600 hover:bg-red-50 active:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors duration-200 flex items-center justify-center space-x-1.5"
+                    className="px-4 py-2 text-sm bg-white text-red-500 rounded-full border-2 border-red-500 hover:bg-red-50 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 flex items-center justify-center space-x-1.5 min-h-[40px]"
                   >
-                    <Trash2 className="h-3.5 w-3.5" />
-                    <span>Delete</span>
+                    <Trash2 className="h-4 w-4" />
+                    <span className="hidden sm:inline">Delete</span>
                   </button>
                 )}
               </>
             )}
             <button
               onClick={handleDownload}
-              className="px-3 py-1.5 text-sm bg-primary-600 text-white rounded-lg border-2 border-primary-600 hover:bg-primary-700 active:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors duration-200 flex items-center justify-center space-x-1.5"
+              className="btn-primary text-sm px-4 py-2 min-h-[40px] flex items-center justify-center space-x-1.5"
             >
-              <Download className="h-3.5 w-3.5" />
+              <Download className="h-4 w-4" />
               <span>Download</span>
             </button>
           </div>
         </div>
-
-        {note.downloadCount > 0 && (
-          <div className="text-xs text-gray-400 text-center pt-2">
-            {note.downloadCount} download{note.downloadCount !== 1 ? 's' : ''}
-          </div>
-        )}
       </div>
     </div>
   );

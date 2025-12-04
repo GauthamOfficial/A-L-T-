@@ -2,7 +2,7 @@
 
 import { Stream, Subject, Medium } from '@/lib/types';
 import { STREAMS, SUBJECTS, MEDIUMS, getSubjectsForStream } from '@/lib/constants';
-import { Filter } from 'lucide-react';
+import { Filter, X } from 'lucide-react';
 
 interface FilterPanelProps {
   selectedStream: Stream | '';
@@ -27,17 +27,32 @@ export function FilterPanel({
     ? getSubjectsForStream(selectedStream)
     : {};
 
+  const hasActiveFilters = selectedStream || selectedSubject || selectedMedium;
+
   return (
-    <div className="card mb-6">
-      <div className="flex items-center space-x-2 mb-4">
-        <Filter className="h-5 w-5 text-primary-600" />
-        <h2 className="text-xl font-semibold text-gray-900">Filters</h2>
+    <div className="card">
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center space-x-2">
+          <div className="bg-primary-100 p-2 rounded-full">
+            <Filter className="h-5 w-5 text-primary-500" />
+          </div>
+          <h2 className="text-xl font-semibold text-text-primary font-display">Filters</h2>
+        </div>
+        {hasActiveFilters && (
+          <button
+            onClick={onReset}
+            className="p-1.5 hover:bg-gray-100 rounded-full transition-colors"
+            aria-label="Reset filters"
+          >
+            <X className="h-4 w-4 text-text-secondary" />
+          </button>
+        )}
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-5">
         {/* Stream Filter */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-semibold text-text-primary mb-2.5">
             Stream
           </label>
           <select
@@ -59,13 +74,13 @@ export function FilterPanel({
 
         {/* Subject Filter */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-semibold text-text-primary mb-2.5">
             Subject
           </label>
           <select
             value={selectedSubject}
             onChange={(e) => onSubjectChange(e.target.value as Subject | '')}
-            className="input-field"
+            className="input-field disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={!selectedStream}
           >
             <option value="">All Subjects</option>
@@ -79,7 +94,7 @@ export function FilterPanel({
 
         {/* Medium Filter */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-semibold text-text-primary mb-2.5">
             Medium
           </label>
           <select
@@ -96,13 +111,14 @@ export function FilterPanel({
           </select>
         </div>
 
-        {/* Reset Button */}
-        {(selectedStream || selectedSubject || selectedMedium) && (
+        {/* Reset Button - Mobile friendly */}
+        {hasActiveFilters && (
           <button
             onClick={onReset}
-            className="btn-secondary w-full"
+            className="btn-secondary w-full flex items-center justify-center space-x-2"
           >
-            Reset Filters
+            <X className="h-4 w-4" />
+            <span>Clear All Filters</span>
           </button>
         )}
       </div>

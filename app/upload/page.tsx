@@ -6,7 +6,7 @@ import { signInWithGoogle, logout } from '@/lib/supabase/auth';
 import { uploadNote } from '@/lib/supabase/notes';
 import { NoteFormData, Stream, Subject, Medium } from '@/lib/types';
 import { STREAMS, SUBJECTS, getSubjectsForStream } from '@/lib/constants';
-import { Upload, FileText, Loader2, CheckCircle, LogOut } from 'lucide-react';
+import { Upload, FileText, Loader2, CheckCircle, LogOut, User } from 'lucide-react';
 import Link from 'next/link';
 import { BookOpen } from 'lucide-react';
 
@@ -105,62 +105,74 @@ export default function UploadPage() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
+      <div className="min-h-screen bg-gradient-to-br from-bg-blue via-bg-soft to-white flex items-center justify-center">
+        <div className="flex flex-col items-center">
+          <Loader2 className="h-10 w-10 animate-spin text-primary-500 mb-4" />
+          <p className="text-text-secondary">Loading...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-10">
+    <div className="min-h-screen bg-gradient-to-br from-bg-blue via-bg-soft to-white">
+      {/* Header - Sticky */}
+      <header className="bg-white/80 backdrop-blur-sm shadow-soft border-b border-gray-100 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center space-x-3">
-              <BookOpen className="h-8 w-8 text-primary-600" />
-              <h1 className="text-2xl font-bold text-gray-900">A/L நோTස්</h1>
+            <Link href="/" className="flex items-center space-x-3 group">
+              <BookOpen className="h-8 w-8 text-text-primary group-hover:text-text-primary transition-colors" />
+              <div>
+                <h1 className="text-xl sm:text-2xl font-bold text-text-primary font-display">A/L நோTස්</h1>
+                <p className="text-xs text-text-secondary hidden sm:block">SL Student Relief</p>
+              </div>
             </Link>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               {user && (
-                <div className="flex items-center space-x-3">
-                  <span className="text-sm text-gray-600">
+                <div className="flex items-center space-x-2 sm:space-x-3">
+                  <span className="text-xs sm:text-sm text-text-secondary hidden sm:inline">
                     {user.user_metadata?.full_name || user.email}
                   </span>
                   <button
                     onClick={logout}
-                    className="btn-secondary flex items-center space-x-2"
+                    className="btn-secondary text-sm flex items-center space-x-2"
                   >
                     <LogOut className="h-4 w-4" />
-                    <span>Logout</span>
+                    <span className="hidden sm:inline">Logout</span>
                   </button>
                 </div>
               )}
-              <Link href="/browse" className="text-gray-700 hover:text-primary-600 font-medium">
-                Browse Notes
+              <Link href="/browse" className="text-text-secondary hover:text-primary-500 font-medium px-3 sm:px-4 py-2 rounded-full hover:bg-primary-50 transition-all duration-200 text-sm sm:text-base">
+                Browse
               </Link>
             </div>
           </div>
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="card">
+      <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="card animate-fade-in">
           <div className="text-center mb-8">
-            <div className="bg-primary-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Upload className="h-8 w-8 text-primary-600" />
+            <div className="relative inline-block mb-6">
+              <div className="absolute inset-0 bg-orange-400/20 rounded-full blur-2xl"></div>
+              <div className="bg-gradient-to-br from-primary-100 to-orange-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto relative z-10 shadow-soft">
+                <Upload className="h-10 w-10 text-primary-500" />
+              </div>
             </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">
+            <h2 className="text-2xl sm:text-3xl font-bold text-text-primary mb-3 font-display">
               Upload Study Notes
             </h2>
-            <p className="text-gray-600">
+            <p className="text-text-secondary text-base sm:text-lg">
               Help flood-affected students by sharing your study materials
             </p>
           </div>
 
           {!user ? (
-            <div className="text-center py-12">
-              <p className="text-gray-600 mb-6">
+            <div className="text-center py-12 animate-fade-in">
+              <div className="bg-primary-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                <User className="h-8 w-8 text-primary-500" />
+              </div>
+              <p className="text-text-secondary mb-6 text-base sm:text-lg">
                 Please sign in with Google to upload notes
               </p>
               <button onClick={handleSignIn} className="btn-primary">
@@ -168,10 +180,10 @@ export default function UploadPage() {
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6 animate-fade-in">
               {/* Title */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-text-primary mb-2.5">
                   Title <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -188,7 +200,7 @@ export default function UploadPage() {
 
               {/* Description */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-text-primary mb-2.5">
                   Description
                 </label>
                 <textarea
@@ -207,7 +219,7 @@ export default function UploadPage() {
 
               {/* Stream */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-text-primary mb-2.5">
                   Stream <span className="text-red-500">*</span>
                 </label>
                 <select
@@ -231,7 +243,7 @@ export default function UploadPage() {
 
               {/* Subject */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-text-primary mb-2.5">
                   Subject <span className="text-red-500">*</span>
                 </label>
                 <select
@@ -255,7 +267,7 @@ export default function UploadPage() {
 
               {/* Medium */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-text-primary mb-2.5">
                   Medium <span className="text-red-500">*</span>
                 </label>
                 <select
@@ -277,46 +289,51 @@ export default function UploadPage() {
 
               {/* File Upload */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-text-primary mb-2.5">
                   PDF File <span className="text-red-500">*</span>
                 </label>
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary-400 transition-colors">
-                  <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                <div className="border-2 border-dashed border-gray-300 rounded-2xl p-8 sm:p-12 text-center hover:border-primary-400 hover:bg-primary-50/30 transition-all duration-200 cursor-pointer group">
                   <label htmlFor="file-input" className="cursor-pointer">
-                    <span className="text-primary-600 font-semibold">
-                      Click to upload
-                    </span>{' '}
-                    <span className="text-gray-600">or drag and drop</span>
-                  </label>
-                  <p className="text-sm text-gray-500 mt-2">
-                    PDF only, max 50MB
-                  </p>
-                  <input
-                    id="file-input"
-                    type="file"
-                    accept=".pdf"
-                    onChange={handleFileChange}
-                    className="hidden"
-                    required
-                  />
-                  {formData.file && (
-                    <p className="text-sm text-gray-700 mt-4">
-                      Selected: {formData.file.name}
+                    <div className="bg-primary-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary-200 transition-colors">
+                      <FileText className="h-8 w-8 text-primary-500" />
+                    </div>
+                    <p className="text-text-primary font-semibold mb-2">
+                      <span className="text-primary-500">Click to upload</span>{' '}
+                      <span className="text-text-secondary">or drag and drop</span>
                     </p>
+                    <p className="text-sm text-text-secondary">
+                      PDF only, max 50MB
+                    </p>
+                    <input
+                      id="file-input"
+                      type="file"
+                      accept=".pdf"
+                      onChange={handleFileChange}
+                      className="hidden"
+                      required
+                    />
+                  </label>
+                  {formData.file && (
+                    <div className="mt-4 p-3 bg-success-50 border border-success-200 rounded-xl">
+                      <p className="text-sm text-success-600 font-medium flex items-center justify-center space-x-2">
+                        <CheckCircle className="h-4 w-4" />
+                        <span>Selected: {formData.file.name}</span>
+                      </p>
+                    </div>
                   )}
                 </div>
               </div>
 
               {/* Error Message */}
               {error && (
-                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-                  {error}
+                <div className="toast-error">
+                  <span>{error}</span>
                 </div>
               )}
 
               {/* Success Message */}
               {success && (
-                <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg flex items-center space-x-2">
+                <div className="toast-success">
                   <CheckCircle className="h-5 w-5" />
                   <span>Note uploaded successfully!</span>
                 </div>
@@ -344,6 +361,15 @@ export default function UploadPage() {
           )}
         </div>
       </main>
+
+      {/* Footer - Minimal */}
+      <footer className="bg-white/60 backdrop-blur-sm border-t border-gray-100 mt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <p className="text-center text-text-secondary text-sm">
+            © 2025 A/L நோTස් - Helping students recover from natural disasters
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
