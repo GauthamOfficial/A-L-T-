@@ -36,7 +36,7 @@ export default function UploadPage() {
         subject: subjects[0] as Subject,
       }));
     }
-  }, [formData.stream]);
+  }, [formData.stream, availableSubjects, formData.subject]);
 
   const handleSignIn = async () => {
     try {

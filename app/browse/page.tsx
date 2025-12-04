@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Note, Stream, Subject, Medium } from '@/lib/types';
 import { searchNotes } from '@/lib/supabase/notes';
 import { NoteCard } from '@/components/NoteCard';
@@ -20,11 +20,7 @@ export default function BrowsePage() {
   const [selectedMedium, setSelectedMedium] = useState<Medium | ''>('');
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
-  useEffect(() => {
-    loadNotes();
-  }, [selectedStream, selectedSubject, selectedMedium]);
-
-  const loadNotes = async () => {
+  const loadNotes = useCallback(async () => {
     setLoading(true);
     try {
       const filters = {
@@ -40,7 +36,11 @@ export default function BrowsePage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedStream, selectedSubject, selectedMedium, searchQuery]);
+
+  useEffect(() => {
+    loadNotes();
+  }, [loadNotes]);
 
   const handleNoteDeleted = () => {
     // Reload notes after deletion
