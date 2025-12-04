@@ -33,18 +33,18 @@ export function FilterPanel({
     <div className="card">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-2">
-          <div className="bg-primary-100 p-2 rounded-full">
-            <Filter className="h-5 w-5 text-primary-500" />
+          <div className="bg-primary-100 dark:bg-primary-900/30 p-2 rounded-full">
+            <Filter className="h-5 w-5 text-primary-500 dark:text-primary-400" />
           </div>
-          <h2 className="text-xl font-semibold text-text-primary font-display">Filters</h2>
+          <h2 className="text-xl font-semibold text-text-primary dark:text-gray-100 font-display">Filters</h2>
         </div>
         {hasActiveFilters && (
           <button
             onClick={onReset}
-            className="p-1.5 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
             aria-label="Reset filters"
           >
-            <X className="h-4 w-4 text-text-secondary" />
+            <X className="h-4 w-4 text-text-secondary dark:text-gray-400" />
           </button>
         )}
       </div>
@@ -52,7 +52,7 @@ export function FilterPanel({
       <div className="space-y-5">
         {/* Stream Filter */}
         <div>
-          <label className="block text-sm font-semibold text-text-primary mb-2.5">
+          <label className="block text-sm font-semibold text-text-primary dark:text-gray-100 mb-2.5">
             Stream
           </label>
           <select
@@ -74,7 +74,7 @@ export function FilterPanel({
 
         {/* Subject Filter */}
         <div>
-          <label className="block text-sm font-semibold text-text-primary mb-2.5">
+          <label className="block text-sm font-semibold text-text-primary dark:text-gray-100 mb-2.5">
             Subject
           </label>
           <select
@@ -94,7 +94,7 @@ export function FilterPanel({
 
         {/* Medium Filter */}
         <div>
-          <label className="block text-sm font-semibold text-text-primary mb-2.5">
+          <label className="block text-sm font-semibold text-text-primary dark:text-gray-100 mb-2.5">
             Medium
           </label>
           <select

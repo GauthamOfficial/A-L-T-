@@ -8,6 +8,7 @@ import { FilterPanel } from '@/components/FilterPanel';
 import { Search, Loader2, Upload, FileText } from 'lucide-react';
 import Link from 'next/link';
 import { BookOpen } from 'lucide-react';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 export default function BrowsePage() {
   const [notes, setNotes] = useState<Note[]>([]);
@@ -65,22 +66,25 @@ export default function BrowsePage() {
     : notes;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-bg-blue via-bg-soft to-white">
+    <div className="min-h-screen bg-gradient-to-br from-bg-blue via-bg-soft to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       {/* Header - Sticky */}
-      <header className="bg-white/80 backdrop-blur-sm shadow-soft border-b border-gray-100 sticky top-0 z-50">
+      <header className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-soft border-b border-gray-100 dark:border-gray-700 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center space-x-3 group">
-              <BookOpen className="h-8 w-8 text-text-primary group-hover:text-text-primary transition-colors" />
+              <BookOpen className="h-8 w-8 text-text-primary dark:text-gray-100 group-hover:text-text-primary dark:group-hover:text-gray-100 transition-colors" />
               <div>
-                <h1 className="text-xl sm:text-2xl font-bold text-text-primary font-display">A/L நோTස්</h1>
-                <p className="text-xs text-text-secondary hidden sm:block">SL Student Relief</p>
+                <h1 className="text-xl sm:text-2xl font-bold text-text-primary dark:text-gray-100 font-display">A/L நோTස්</h1>
+                <p className="text-xs text-text-secondary dark:text-gray-400 hidden sm:block">SL Student Relief</p>
               </div>
             </Link>
-            <Link href="/upload" className="btn-primary flex items-center justify-center space-x-2">
-              <Upload className="h-4 w-4" />
-              <span>Upload Notes</span>
-            </Link>
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <ThemeToggle />
+              <Link href="/upload" className="btn-primary flex items-center justify-center space-x-2">
+                <Upload className="h-4 w-4" />
+                <span>Upload Notes</span>
+              </Link>
+            </div>
           </div>
         </div>
       </header>
@@ -90,7 +94,7 @@ export default function BrowsePage() {
         <div className="mb-6">
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             <div className="flex-1 relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-text-secondary pointer-events-none" />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-text-secondary dark:text-gray-400 pointer-events-none" />
               <input
                 type="text"
                 placeholder="Search notes by title or description..."
@@ -125,16 +129,16 @@ export default function BrowsePage() {
           <div className="lg:col-span-3">
             {loading ? (
               <div className="flex flex-col items-center justify-center py-16">
-                <Loader2 className="h-10 w-10 animate-spin text-primary-500 mb-4" />
-                <p className="text-text-secondary">Loading notes...</p>
+                <Loader2 className="h-10 w-10 animate-spin text-primary-500 dark:text-primary-400 mb-4" />
+                <p className="text-text-secondary dark:text-gray-300">Loading notes...</p>
               </div>
             ) : filteredNotes.length === 0 ? (
               <div className="card text-center py-16 animate-fade-in">
-                <div className="bg-bg-blue w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <FileText className="h-10 w-10 text-text-secondary" />
+                <div className="bg-bg-blue dark:bg-gray-700 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <FileText className="h-10 w-10 text-text-secondary dark:text-gray-400" />
                 </div>
-                <h3 className="text-xl font-semibold text-text-primary mb-2 font-display">No notes found</h3>
-                <p className="text-text-secondary mb-6">
+                <h3 className="text-xl font-semibold text-text-primary dark:text-gray-100 mb-2 font-display">No notes found</h3>
+                <p className="text-text-secondary dark:text-gray-300 mb-6">
                   Try adjusting your filters or search query
                 </p>
                 <button onClick={handleReset} className="btn-secondary">
@@ -157,9 +161,9 @@ export default function BrowsePage() {
       </main>
 
       {/* Footer - Minimal */}
-      <footer className="bg-white/60 backdrop-blur-sm border-t border-gray-100 mt-16">
+      <footer className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-t border-gray-100 dark:border-gray-700 mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <p className="text-center text-text-secondary text-sm">
+          <p className="text-center text-text-secondary dark:text-gray-400 text-sm">
             © 2025 A/L நோTස් - Helping students recover from natural disasters
           </p>
         </div>

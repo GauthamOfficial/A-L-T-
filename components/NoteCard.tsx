@@ -68,15 +68,15 @@ export function NoteCard({ note, onDelete }: NoteCardProps) {
         {/* Title and Description */}
         <div>
           <div className="flex items-start justify-between gap-3 mb-2">
-            <h3 className="text-lg sm:text-xl font-semibold text-text-primary line-clamp-2 flex-1 font-display">
+            <h3 className="text-lg sm:text-xl font-semibold text-text-primary dark:text-gray-100 line-clamp-2 flex-1 font-display">
               {note.title}
             </h3>
-            <div className="bg-primary-100 p-2 rounded-full flex-shrink-0">
-              <FileText className="h-5 w-5 text-primary-500" />
+            <div className="bg-primary-100 dark:bg-primary-900/30 p-2 rounded-full flex-shrink-0">
+              <FileText className="h-5 w-5 text-primary-500 dark:text-primary-400" />
             </div>
           </div>
           {note.description && (
-            <p className="text-text-secondary text-sm sm:text-base line-clamp-3 leading-relaxed">
+            <p className="text-text-secondary dark:text-gray-300 text-sm sm:text-base line-clamp-3 leading-relaxed">
               {note.description}
             </p>
           )}
@@ -97,17 +97,17 @@ export function NoteCard({ note, onDelete }: NoteCardProps) {
 
         {/* Metadata and Actions */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pt-4 border-t border-gray-100 gap-4">
-          <div className="flex flex-col space-y-2 text-sm text-text-secondary">
+          <div className="flex flex-col space-y-2 text-sm text-text-secondary dark:text-gray-300">
             <div className="flex items-center space-x-2">
-              <User className="h-4 w-4 text-primary-400" />
+              <User className="h-4 w-4 text-primary-400 dark:text-primary-500" />
               <span>{note.uploaderName}</span>
             </div>
             <div className="flex items-center space-x-2">
-              <Calendar className="h-4 w-4 text-primary-400" />
+              <Calendar className="h-4 w-4 text-primary-400 dark:text-primary-500" />
               <span>{formatDate(note.createdAt)}</span>
             </div>
             {note.downloadCount > 0 && (
-              <div className="flex items-center space-x-2 text-success-600">
+              <div className="flex items-center space-x-2 text-success-600 dark:text-success-400">
                 <Download className="h-4 w-4" />
                 <span className="text-xs font-medium">
                   {note.downloadCount} download{note.downloadCount !== 1 ? 's' : ''}
@@ -141,7 +141,7 @@ export function NoteCard({ note, onDelete }: NoteCardProps) {
                     <button
                       onClick={() => setShowConfirm(false)}
                       disabled={isDeleting}
-                      className="px-4 py-2 text-sm bg-white text-text-secondary rounded-full border-2 border-gray-300 hover:bg-gray-50 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 min-h-[40px]"
+                      className="px-4 py-2 text-sm bg-white dark:bg-gray-800 text-text-secondary dark:text-gray-300 rounded-full border-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-gray-400 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 min-h-[40px]"
                     >
                       Cancel
                     </button>
