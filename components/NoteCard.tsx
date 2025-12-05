@@ -180,7 +180,7 @@ export function NoteCard({ note, onDelete }: NoteCardProps) {
                 </h3>
               </div>
               <p className="text-text-secondary dark:text-gray-300 mb-6">
-                Are you sure you want to delete <span className="font-semibold">"{note.title}"</span>? This action cannot be undone.
+                Are you sure you want to delete <span className="font-semibold">&quot;{note.title}&quot;</span>? This action cannot be undone.
               </p>
               <div className="flex gap-3 justify-end">
                 <button
