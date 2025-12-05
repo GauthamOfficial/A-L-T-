@@ -1,9 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/components/AuthProvider';
-import { signInWithGoogle, logout } from '@/lib/supabase/auth';
-import { uploadNote } from '@/lib/supabase/notes';
+import { useSession, signIn, signOut } from 'next-auth/react';
 import { NoteFormData, Stream, Subject, Medium } from '@/lib/types';
 import { STREAMS, SUBJECTS, getSubjectsForStream } from '@/lib/constants';
 import { Upload, FileText, Loader2, CheckCircle, LogOut, User } from 'lucide-react';
@@ -12,7 +10,9 @@ import { BookOpen } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
 export default function UploadPage() {
-  const { user, loading: authLoading } = useAuth();
+  const { data: session, status } = useSession();
+  const user = session?.user;
+  const authLoading = status === 'loading';
   const [uploading, setUploading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -40,7 +40,7 @@ export default function UploadPage() {
 
   const handleSignIn = async () => {
     try {
-      await signInWithGoogle();
+      await signIn('google');
     } catch (error: any) {
       setError(error.message || 'Failed to sign in');
     }
@@ -79,11 +79,25 @@ export default function UploadPage() {
     setSuccess(false);
 
     try {
-      await uploadNote(
-        formData,
-        user.id,
-        user.user_metadata?.full_name || user.email || 'Anonymous'
-      );
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', formData.file);
+      uploadFormData.append('title', formData.title);
+      uploadFormData.append('description', formData.description);
+      uploadFormData.append('stream', formData.stream);
+      uploadFormData.append('subject', formData.subject);
+      uploadFormData.append('medium', formData.medium);
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: uploadFormData,
+      });
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to upload note');
+      }
+
       setSuccess(true);
       // Reset form
       setFormData({
@@ -136,10 +150,10 @@ export default function UploadPage() {
               {user && (
                 <div className="flex items-center gap-2 sm:gap-3">
                   <span className="text-xs sm:text-sm text-text-secondary dark:text-gray-300 hidden md:inline truncate max-w-[120px]">
-                    {user.user_metadata?.full_name || user.email}
+                    {user.name || user.email}
                   </span>
                   <button
-                    onClick={logout}
+                    onClick={() => signOut()}
                     className="btn-secondary text-sm flex items-center gap-1.5 sm:gap-2 px-3 sm:px-6 whitespace-nowrap"
                   >
                     <LogOut className="h-4 w-4 flex-shrink-0" />

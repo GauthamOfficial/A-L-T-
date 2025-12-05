@@ -3,9 +3,9 @@
 import { useState, useEffect } from 'react';
 import { Note } from '@/lib/types';
 import { Download, User, Calendar, Trash2, Loader2, FileText } from 'lucide-react';
-import { incrementDownloadCount, deleteNote } from '@/lib/supabase/notes';
+import { incrementDownloadCount } from '@/lib/supabase/notes';
 import { STREAMS, SUBJECTS, MEDIUMS } from '@/lib/constants';
-import { useAuth } from '@/components/AuthProvider';
+import { useSession } from 'next-auth/react';
 
 interface NoteCardProps {
   note: Note;
@@ -13,11 +13,12 @@ interface NoteCardProps {
 }
 
 export function NoteCard({ note, onDelete }: NoteCardProps) {
-  const { user } = useAuth();
+  const { data: session } = useSession();
+  const user = session?.user;
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const isOwner = user && user.id === note.uploadedBy;
+  const isOwner = user && (user.email === note.uploadedBy || user.id === note.uploadedBy);
 
   const handleDownload = async () => {
     try {
@@ -38,8 +39,14 @@ export function NoteCard({ note, onDelete }: NoteCardProps) {
 
     setIsDeleting(true);
     try {
-      // Delete from database and storage
-      await deleteNote(note.id, user.id);
+      const response = await fetch(`/api/notes/${note.id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        const result = await response.json();
+        throw new Error(result.error || 'Failed to delete note');
+      }
       
       // Success - refresh the list to remove deleted note
       setShowDeleteModal(false);
